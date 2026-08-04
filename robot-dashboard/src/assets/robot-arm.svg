@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 520" fill="none">
+  <!-- Definitions -->
+  <defs>
+    <linearGradient id="baseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a5f"/>
+      <stop offset="100%" stop-color="#0f2035"/>
+    </linearGradient>
+    <linearGradient id="armGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a5f"/>
+      <stop offset="100%" stop-color="#162d47"/>
+    </linearGradient>
+    <linearGradient id="jointGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#253f5e"/>
+      <stop offset="100%" stop-color="#0f2035"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="subtleGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- BASE PLATFORM -->
+  <ellipse cx="140" cy="490" rx="75" ry="14" fill="#0a1628" opacity="0.8"/>
+  <rect x="90" y="455" width="100" height="40" rx="6" fill="url(#baseGrad)" stroke="#1e3a5f" stroke-width="1.5"/>
+  <rect x="95" y="458" width="90" height="6" rx="2" fill="#253f5e" opacity="0.6"/>
+  <!-- Base mounting bolts -->
+  <circle cx="100" cy="470" r="3" fill="#0f2035" stroke="#38bdf8" stroke-width="0.8"/>
+  <circle cx="180" cy="470" r="3" fill="#0f2035" stroke="#38bdf8" stroke-width="0.8"/>
+  <circle cx="100" cy="485" r="3" fill="#0f2035" stroke="#38bdf8" stroke-width="0.8"/>
+  <circle cx="180" cy="485" r="3" fill="#0f2035" stroke="#38bdf8" stroke-width="0.8"/>
+  <!-- Base LED strip -->
+  <rect x="100" y="490" width="80" height="3" rx="1.5" fill="#38bdf8" opacity="0.4" filter="url(#glow)"/>
+
+  <!-- J1 ROTATION JOINT -->
+  <ellipse cx="140" cy="452" rx="28" ry="12" fill="url(#jointGrad)" stroke="#38bdf8" stroke-width="1"/>
+  <ellipse cx="140" cy="449" rx="20" ry="8" fill="#0d1f35" stroke="#1e3a5f" stroke-width="1"/>
+  <circle cx="140" cy="449" r="5" fill="#38bdf8" opacity="0.6" filter="url(#subtleGlow)"/>
+
+  <!-- LOWER ARM (Shoulder to Elbow) -->
+  <rect x="122" y="280" width="36" height="175" rx="10" fill="url(#armGrad)" stroke="#1e3a5f" stroke-width="1.5"/>
+  <!-- Lower arm detail lines -->
+  <rect x="126" y="290" width="4" height="155" rx="2" fill="#253f5e" opacity="0.5"/>
+  <rect x="150" y="290" width="4" height="155" rx="2" fill="#253f5e" opacity="0.5"/>
+  <!-- Lower arm cable conduit -->
+  <rect x="133" y="300" width="14" height="140" rx="3" fill="#0d1f35" stroke="#1e2f47" stroke-width="0.5"/>
+  <!-- Cable markers -->
+  <rect x="135" y="320" width="10" height="2" rx="1" fill="#38bdf8" opacity="0.3"/>
+  <rect x="135" y="360" width="10" height="2" rx="1" fill="#38bdf8" opacity="0.3"/>
+  <rect x="135" y="400" width="10" height="2" rx="1" fill="#38bdf8" opacity="0.3"/>
+
+  <!-- J2 SHOULDER JOINT -->
+  <ellipse cx="140" cy="285" rx="30" ry="14" fill="url(#jointGrad)" stroke="#38bdf8" stroke-width="1.2"/>
+  <ellipse cx="140" cy="281" rx="22" ry="10" fill="#0d1f35" stroke="#1e3a5f" stroke-width="1"/>
+  <circle cx="140" cy="281" r="6" fill="#38bdf8" opacity="0.5" filter="url(#subtleGlow)"/>
+  <!-- Shoulder encoder disc markings -->
+  <circle cx="140" cy="281" r="14" fill="none" stroke="#253f5e" stroke-width="0.5" stroke-dasharray="2 4"/>
+
+  <!-- UPPER ARM (Elbow to Wrist) -->
+  <rect x="128" y="140" width="24" height="148" rx="8" fill="url(#armGrad)" stroke="#1e3a5f" stroke-width="1.5"/>
+  <!-- Upper arm detail -->
+  <rect x="132" y="150" width="3" height="128" rx="1.5" fill="#253f5e" opacity="0.5"/>
+  <rect x="145" y="150" width="3" height="128" rx="1.5" fill="#253f5e" opacity="0.5"/>
+  <!-- Vertical cable -->
+  <rect x="138" y="155" width="4" height="118" rx="2" fill="#0d1f35"/>
+
+  <!-- J3 ELBOW JOINT -->
+  <ellipse cx="140" cy="145" rx="26" ry="12" fill="url(#jointGrad)" stroke="#38bdf8" stroke-width="1.2"/>
+  <ellipse cx="140" cy="141" rx="18" ry="8" fill="#0d1f35" stroke="#1e3a5f" stroke-width="1"/>
+  <circle cx="140" cy="141" r="5" fill="#38bdf8" opacity="0.5" filter="url(#subtleGlow)"/>
+
+  <!-- FOREARM (slightly angled for realism) -->
+  <rect x="130" y="70" width="20" height="78" rx="7" fill="url(#armGrad)" stroke="#1e3a5f" stroke-width="1.5"/>
+  <rect x="134" y="78" width="3" height="58" rx="1.5" fill="#253f5e" opacity="0.4"/>
+  <rect x="143" y="78" width="3" height="58" rx="1.5" fill="#253f5e" opacity="0.4"/>
+
+  <!-- J4 WRIST JOINT -->
+  <ellipse cx="140" cy="73" rx="22" ry="10" fill="url(#jointGrad)" stroke="#38bdf8" stroke-width="1"/>
+  <ellipse cx="140" cy="70" rx="15" ry="7" fill="#0d1f35" stroke="#1e3a5f" stroke-width="0.8"/>
+  <circle cx="140" cy="70" r="4" fill="#38bdf8" opacity="0.45" filter="url(#subtleGlow)"/>
+
+  <!-- WRIST SECTION -->
+  <rect x="132" y="42" width="16" height="34" rx="6" fill="url(#armGrad)" stroke="#1e3a5f" stroke-width="1"/>
+
+  <!-- J5 TOOL JOINT -->
+  <ellipse cx="140" cy="44" rx="18" ry="8" fill="url(#jointGrad)" stroke="#38bdf8" stroke-width="1"/>
+  <ellipse cx="140" cy="41" rx="12" ry="6" fill="#0d1f35" stroke="#1e3a5f" stroke-width="0.8"/>
+  <circle cx="140" cy="41" r="3.5" fill="#a855f7" opacity="0.5" filter="url(#subtleGlow)"/>
+
+  <!-- GRIPPER TOOL FLANGE -->
+  <rect x="126" y="20" width="28" height="26" rx="6" fill="url(#jointGrad)" stroke="#1e3a5f" stroke-width="1.5"/>
+  <rect x="128" y="22" width="24" height="4" rx="2" fill="#253f5e" opacity="0.7"/>
+
+  <!-- GRIPPER JAWS -->
+  <!-- Left jaw -->
+  <rect x="112" y="6" width="12" height="22" rx="4" fill="url(#armGrad)" stroke="#38bdf8" stroke-width="1"/>
+  <rect x="114" y="10" width="4" height="12" rx="2" fill="#0d1f35" opacity="0.7"/>
+  <!-- Right jaw -->
+  <rect x="156" y="6" width="12" height="22" rx="4" fill="url(#armGrad)" stroke="#38bdf8" stroke-width="1"/>
+  <rect x="162" y="10" width="4" height="12" rx="2" fill="#0d1f35" opacity="0.7"/>
+  <!-- Gripper LED indicators -->
+  <circle cx="118" cy="4" r="2.5" fill="#22c55e" filter="url(#subtleGlow)" opacity="0.9"/>
+  <circle cx="162" cy="4" r="2.5" fill="#22c55e" filter="url(#subtleGlow)" opacity="0.9"/>
+
+  <!-- Status LED strips on arm -->
+  <rect x="122" y="370" width="4" height="20" rx="2" fill="#38bdf8" opacity="0.3" filter="url(#subtleGlow)"/>
+  <rect x="154" y="370" width="4" height="20" rx="2" fill="#38bdf8" opacity="0.3" filter="url(#subtleGlow)"/>
+  <rect x="130" y="200" width="3" height="15" rx="1.5" fill="#a855f7" opacity="0.4" filter="url(#subtleGlow)"/>
+  <rect x="147" y="200" width="3" height="15" rx="1.5" fill="#a855f7" opacity="0.4" filter="url(#subtleGlow)"/>
+
+  <!-- Axis labels (subtle) -->
+  <text x="165" y="456" font-size="7" fill="#38bdf8" opacity="0.5" font-family="JetBrains Mono">J1</text>
+  <text x="174" y="288" font-size="7" fill="#38bdf8" opacity="0.5" font-family="JetBrains Mono">J2</text>
+  <text x="170" y="148" font-size="7" fill="#38bdf8" opacity="0.5" font-family="JetBrains Mono">J3</text>
+  <text x="158" y="76" font-size="7" fill="#38bdf8" opacity="0.5" font-family="JetBrains Mono">J4</text>
+  <text x="162" y="47" font-size="7" fill="#a855f7" opacity="0.5" font-family="JetBrains Mono">J5</text>
+</svg>
