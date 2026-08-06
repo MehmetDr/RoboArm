@@ -10,7 +10,7 @@
  * are completely independent and are NOT affected here.
  */
 
-import { reactive } from 'vue'
+import { useRobotStore } from '../store/robotStore.js'
 
 // ── Joint configuration (exported at module level — one array for all consumers) ──
 export const jointConfigs = [
@@ -56,18 +56,7 @@ export const jointConfigs = [
   },
 ]
 
-// ── Reactive state (module-level singleton — survives hot-reload) ──────────────
-// angles[] values are in RADIANS (Three.js native unit).
-// Each index maps 1-to-1 with jointConfigs.
-const state = reactive({
-  angles:      [0, 0, 0, 0, 0],
-  gripperOpen: false,
-  /**
-   * AI Anomaly Detection — backend push events land here.
-   * Shape: { id, timestamp, axis, type, severity ('WARNING'|'CRITICAL'), message }
-   */
-  anomalies: [],
-})
+// (State moved to Pinia store: robotStore.js)
 
 // ── Unit conversion helpers ───────────────────────────────────────────────────
 
@@ -88,34 +77,7 @@ export function radToUi(rad, cfg) {
   return cfg.uiMin + t * (cfg.uiMax - cfg.uiMin)
 }
 
-// ── Mutation helpers ──────────────────────────────────────────────────────────
-
-/**
- * Set joint angle in radians.
- * Uses splice() to guarantee Vue 3 tracks the array-item mutation.
- */
-export function setAngle(index, radValue) {
-  state.angles.splice(index, 1, radValue)
-}
-
-/**
- * Toggle the gripper and sync the claw bone angle.
- * open=true  → angle 0    (jaws open)
- * open=false → angle -0.8 (jaws closed)
- */
-export function toggleGripper(open) {
-  state.gripperOpen = open
-  state.angles.splice(4, 1, open ? 0 : -0.8)
-}
-
-/**
- * Push a new anomaly event into the reactive state.
- * Payload: { id, timestamp, axis, type, severity ('WARNING'|'CRITICAL'), message }
- * The UI (CenterPanel HUD badges, AlarmLog) reacts automatically.
- */
-export function addAnomaly(payload) {
-  state.anomalies.unshift(payload) // newest first
-}
+// Mutation helpers are now in the Pinia store. We will proxy them through the useRobot composable.
 
 /**
  * WebSocket bağlantısı için taslak — gerçek mantığı sen dolduracaksın.
@@ -127,5 +89,17 @@ export function initWebSocket() {
 
 // ── Composable entry point ────────────────────────────────────────────────────
 export function useRobot() {
-  return { state, jointConfigs, setAngle, toggleGripper, uiToRad, radToUi, addAnomaly, initWebSocket }
+  const store = useRobotStore()
+  
+  return { 
+    state: store, 
+    jointConfigs, 
+    setAngle: store.setAngle, 
+    toggleGripper: store.toggleGripper, 
+    uiToRad, 
+    radToUi, 
+    addAnomaly: store.addAnomaly, 
+    homePosition: store.homePosition,
+    initWebSocket 
+  }
 }
