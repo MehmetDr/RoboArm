@@ -100,6 +100,7 @@ export function useRobot() {
     radToUi, 
     addAnomaly: store.addAnomaly, 
     homePosition: store.homePosition,
+    executeTask: store.executeTask,
     initWebSocket 
   }
 }

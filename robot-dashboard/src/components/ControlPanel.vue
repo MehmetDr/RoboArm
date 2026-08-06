@@ -102,13 +102,35 @@
       </div>
     </div>
 
-    <!-- ── Execute button ───────────────────────────────────────────────── -->
-    <button class="execute-btn" @click="onExecute">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-        <polygon points="5,3 19,12 5,21" fill="#0a0d14"/>
-      </svg>
-      EXECUTE MOTION
-    </button>
+    <!-- ── Action buttons ───────────────────────────────────────────────── -->
+    <div class="action-buttons">
+      <button class="execute-btn" @click="onExecute">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <polygon points="5,3 19,12 5,21" fill="#0a0d14"/>
+        </svg>
+        EXECUTE
+      </button>
+      <button class="home-btn" @click="onHome">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        </svg>
+        HOME
+      </button>
+    </div>
+
+    <!-- ── Task Planner (Intent-based) ──────────────────────────────────── -->
+    <div class="planner-section">
+      <div class="cp-header" style="margin-bottom: 4px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2">
+          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+        </svg>
+        <span style="color:#a855f7">GÖREV PLANLAYICI (AI)</span>
+      </div>
+      <div class="planner-buttons">
+        <button class="task-btn" @click="onTaskPick">PARÇA AL</button>
+        <button class="task-btn" @click="onTaskReset">BAŞLANGIÇ</button>
+      </div>
+    </div>
 
     <!-- ── DEV ONLY: Test Anomaly ────────────────────────────────────────── -->
     <button class="test-anomaly-btn" @click="sendTestAnomaly" title="Rastgele sahte anomali g\xF6nder">
@@ -128,7 +150,7 @@
 import { computed } from 'vue'
 import { useRobot, jointConfigs, uiToRad, radToUi, addAnomaly } from '../composables/useRobot.js'
 
-const { state, setAngle, toggleGripper } = useRobot()
+const { state, setAngle, toggleGripper, homePosition, executeTask } = useRobot()
 
 // Only joints 0-3 are shown as sliders (J1-J4).
 // Joint 4 (claw) is controlled by the gripper toggle below.
@@ -172,6 +194,24 @@ function onExecute() {
   if (!btn) return
   btn.classList.add('firing')
   setTimeout(() => btn.classList.remove('firing'), 600)
+}
+
+function onHome() {
+  homePosition()
+}
+
+function onTaskPick() {
+  // Parça Al hedefleri (derece): J1=45, J2=60, J3=-30, J4=90
+  const targetDegs = [45, 60, -30, 90]
+  const targetRads = targetDegs.map((deg, i) => uiToRad(deg, normalJoints[i]))
+  executeTask('PARÇA AL', targetRads)
+}
+
+function onTaskReset() {
+  // Başlangıç hedefleri (derece): hepsi 0
+  const targetDegs = [0, 0, 0, 0]
+  const targetRads = targetDegs.map((deg, i) => uiToRad(deg, normalJoints[i]))
+  executeTask('BAŞLANGIÇ KONUMU', targetRads)
 }
 
 // ── Styling helpers ───────────────────────────────────────────────────────────
@@ -309,18 +349,50 @@ function sendTestAnomaly() {
 .force-val { font-size: 14px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: #94a3b8; }
 .f-unit   { font-size: 10px; color: #475569; }
 
-/* ── Execute ── */
-.execute-btn {
+/* ── Execute & Home ── */
+.action-buttons {
+  display: flex; gap: 8px;
+}
+.execute-btn, .home-btn {
   display: flex; align-items: center; justify-content: center; gap: 7px;
-  width: 100%; padding: 9px;
-  background: rgba(56,189,248,0.12); border: 1px solid rgba(56,189,248,0.3);
-  border-radius: 8px; color: #38bdf8;
+  padding: 9px; border-radius: 8px;
   font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
   cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif;
 }
-.execute-btn:hover         { background: rgba(56,189,248,0.2); border-color: rgba(56,189,248,0.5); box-shadow: 0 0 16px rgba(56,189,248,0.2); }
-.execute-btn:active        { transform: scale(0.98); }
-.execute-btn.firing        { background: rgba(56,189,248,0.35); transform: scale(0.97); }
+.execute-btn {
+  flex: 2;
+  background: rgba(56,189,248,0.12); border: 1px solid rgba(56,189,248,0.3);
+  color: #38bdf8;
+}
+.execute-btn:hover { background: rgba(56,189,248,0.2); border-color: rgba(56,189,248,0.5); box-shadow: 0 0 16px rgba(56,189,248,0.2); }
+.execute-btn:active { transform: scale(0.98); }
+.execute-btn.firing { background: rgba(56,189,248,0.35); transform: scale(0.97); }
+
+.home-btn {
+  flex: 1;
+  background: rgba(226,232,240,0.1); border: 1px solid rgba(226,232,240,0.2);
+  color: #e2e8f0;
+}
+.home-btn:hover { background: rgba(226,232,240,0.15); border-color: rgba(226,232,240,0.3); }
+.home-btn:active { transform: scale(0.98); }
+
+/* ── Task Planner ── */
+.planner-section {
+  display: flex; flex-direction: column; gap: 6px;
+  background: rgba(168,85,247,0.05); border: 1px solid rgba(168,85,247,0.2);
+  padding: 10px; border-radius: 10px;
+}
+.planner-buttons {
+  display: flex; gap: 8px;
+}
+.task-btn {
+  flex: 1; padding: 7px; border-radius: 6px;
+  background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.3);
+  color: #d8b4fe; font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
+  cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif;
+}
+.task-btn:hover { background: rgba(168,85,247,0.25); border-color: rgba(168,85,247,0.5); }
+.task-btn:active { transform: scale(0.96); }
 
 /* ── DEV: Test Anomaly butonu ── */
 .test-anomaly-btn {

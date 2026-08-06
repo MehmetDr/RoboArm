@@ -81,6 +81,9 @@
       </div>
     </div>
 
+    <!-- AI Terminal — feeds from state.aiLogs -->
+    <AiTerminal />
+
     <!-- Alarm Log — feeds from state.anomalies -->
     <AlarmLog />
   </div>
@@ -90,6 +93,7 @@
 import { ref, computed } from 'vue'
 import RobotViewer from './RobotViewer.vue'
 import AlarmLog   from './AlarmLog.vue'
+import AiTerminal from './AiTerminal.vue'
 import { useRobot, radToUi, jointConfigs } from '../composables/useRobot.js'
 
 const { state } = useRobot()
