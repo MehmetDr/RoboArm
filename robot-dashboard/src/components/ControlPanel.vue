@@ -148,9 +148,9 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useRobot, jointConfigs, uiToRad, radToUi, addAnomaly } from '../composables/useRobot.js'
+import { useRobot, jointConfigs, uiToRad, radToUi } from '../composables/useRobot.js'
 
-const { state, setAngle, toggleGripper, homePosition, executeTask } = useRobot()
+const { state, setAngle, toggleGripper, homePosition, executeTask, addAnomaly } = useRobot()
 
 // Only joints 0-3 are shown as sliders (J1-J4).
 // Joint 4 (claw) is controlled by the gripper toggle below.

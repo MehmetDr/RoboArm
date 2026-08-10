@@ -4,15 +4,17 @@
 
 <script setup>
 import { defineEmits } from 'vue'
-import { useGLTF } from '@tresjs/cientos'
-import { useRenderLoop } from '@tresjs/core'
+import { useLoop } from '@tresjs/core'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { useRobot } from '../composables/useRobot.js'
 
 const emit = defineEmits(['loaded'])
 
 const { state, jointConfigs } = useRobot()
 
-const { scene } = await useGLTF('/scene.gltf')
+const loader = new GLTFLoader()
+const gltfResult = await loader.loadAsync('/scene.gltf')
+const scene = gltfResult.scene
 
 scene.traverse(node => {
   if (node.isMesh) {
@@ -43,12 +45,16 @@ jointConfigs.forEach(cfg => {
   }
 })
 
-// Emit event immediately after model processing is done
-emit('loaded')
+import { onMounted } from 'vue'
 
-const { onLoop } = useRenderLoop()
+// Emit event immediately after model processing is mounted
+onMounted(() => {
+  emit('loaded')
+})
 
-onLoop(() => {
+const { onBeforeRender } = useLoop()
+
+onBeforeRender(() => {
   jointConfigs.forEach((cfg, i) => {
     const rad = state.angles[i]
     if (cfg.isClaw) {
